@@ -3,3 +3,8 @@
 
 ## Jetbrain
 .idea/
+
+# Dependencies
+
+## Node packages
+node_modules/
