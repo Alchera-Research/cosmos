@@ -63,3 +63,4 @@ Must be one of the following:
 * **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
 * **test**: Adding missing tests or correcting existing tests
 * **dependency**: when you add or update a dependency 
+* **config**: when you change the configuration of the project (example scopes: webpack, babel, eslint)
