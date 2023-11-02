@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "ES2022",
     "module": "commonjs",
     "outDir": "./dist",
@@ -12,7 +13,7 @@
     "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-//    "src/sample-project-for-test"
+    "node_modules"
+    //    "src/sample-project-for-test"
   ]
 }
