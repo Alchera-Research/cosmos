@@ -1,4 +1,5 @@
 {
+  "ecmaVersion": 2022,
   "compilerOptions": {
     "baseUrl": ".",
     "target": "ES2022",
