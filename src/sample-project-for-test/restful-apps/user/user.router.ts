@@ -1,11 +1,14 @@
 import express, { Request, Response } from 'express';
+import UserController from './user.controller';
 
 const router = express.Router();
 
 function sampelResponse(req: Request, res: Response) {
-  res.send('user router');
+  res.send('user middleware');
 }
 
-router.use('/', sampelResponse);
+router.route('/')
+  .get(sampelResponse)
+  .post(UserController.create);
 
 export default router;

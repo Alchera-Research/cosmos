@@ -1,4 +1,4 @@
-import { Model, DataTypes, UUID } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
 import sequelize from 'src/sample-project-for-test/common/sequelize.util';
 
 class User extends Model {
