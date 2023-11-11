@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import UserModel from '../sample-project-for-test/restful-apps/user/user.model';
-// TODO: for manage all Model need to implement Centralized Model Store
-//   - such as.. SequelizeModelStore.register(user);
-//   - and then.. SequelizeModelStore.get('user');
+import CosmosModelStoreSingleton from 'src/store/cosmos-model-store.singleton';
+
+const cosmosModelStore = CosmosModelStoreSingleton.getInstance();
 
 class CosmosController {
-
   // static async load(controllerParams: ControllerParams) {
   //   controllerParams?.expressParams?.res.send('cosmos middleware');
   // }
@@ -15,7 +13,11 @@ class CosmosController {
     res: Response,
     next: NextFunction,
   ): Promise<void> {
-    const queryResult = await UserModel?.create(req.body);
+    const targetModel = cosmosModelStore.getSequelizeModel('user');
+    console.log('cosmos.controller.create:c-1:: ', targetModel);
+
+    const queryResult = await targetModel?.create(req.body);
+    console.log('cosmos.controller.create:c-2:: ', queryResult);
 
     res.status(201).json(queryResult);
   }
