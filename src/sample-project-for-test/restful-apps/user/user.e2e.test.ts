@@ -13,7 +13,7 @@ describe('Integration::APT::user.middleware.test.ts', () => {
   });
 
   describe('POST /users', () => {
-    it('APT::normal-case-002: should respond with "200 ok" on root path', async () => {
+    it('APT::normal-case-002: should respond with "201 created" on root path', async () => {
       const userBody = {
         name: 'test',
         email: 'test@example.com',
@@ -23,6 +23,7 @@ describe('Integration::APT::user.middleware.test.ts', () => {
         .send(userBody);
 
       expect(response.status).toBe(201);
+      console.log(userBody, response.body);
       expect(response.body).toMatchObject(userBody);
     });
   });

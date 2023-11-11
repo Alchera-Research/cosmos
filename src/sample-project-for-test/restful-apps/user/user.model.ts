@@ -21,7 +21,7 @@ User.init({
   },
   email: {
     type: new DataTypes.STRING(128),
-  }
+  },
 }, {
   tableName: 'users',
   sequelize,
