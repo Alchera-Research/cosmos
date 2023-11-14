@@ -8,7 +8,8 @@ type UrlLayer = {
 
 class ExpressUrlParserLib {
   static parseUrl(req: Request): UrlLayer[] {
-    const pathParts = req.path.split('/').filter(Boolean);
+    const URIpath = req.originalUrl.split('?')[0];
+    const pathParts = URIpath.split('/').filter(Boolean);
     const paramKeys = Object.keys(req.params);
 
     let parsedLayers2 = [];
