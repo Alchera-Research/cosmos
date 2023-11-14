@@ -19,11 +19,12 @@ class ExpressUrlParserLib {
       let hasParam = false;
       let targetParam;
 
-      if (part !== undefined) {
-        hasParam = paramKeys.includes(part);
+      if (part) {
+        const paramKey = `${part}Id`;
+        hasParam = paramKeys.includes(paramKey);
 
         if (hasParam) {
-          targetParam = req.params[part];
+          targetParam = req.params[paramKey];
         }
       }
 

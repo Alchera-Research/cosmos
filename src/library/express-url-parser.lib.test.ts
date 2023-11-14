@@ -9,9 +9,8 @@ describe('Integration::APT::express-url-parser.lib.test.ts', () => {
   describe('GET /a/:a/b//c/:c/d', () => {
 
     it('APT::normal-case-001: should respond with "200 ok" on root path', async () => {
-      const routerPattern = '/a/:a/b/c/:c/d';
+      const routerPattern = '/a/:aId/b/c/:cId/d';
       const targetUrl = '/a/1/b/c/2/d?e=3';
-
 
       app.route(routerPattern)
         .get((req, res) => {
@@ -32,7 +31,7 @@ describe('Integration::APT::express-url-parser.lib.test.ts', () => {
     });
 
     it('APT::normal-case-002: should respond with "200 ok"', async () => {
-      const routerPattern = '/a/:a/b/:b/c/:c/d';
+      const routerPattern = '/a/:aId/b/:bId/c/:cId/d';
       const targetUrl = '/a/1/b/2/c/3/d?1212=1';
 
       app.route(routerPattern)
