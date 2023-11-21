@@ -29,9 +29,7 @@ class CosmosController {
     next: NextFunction,
     isRestful: boolean = true,
   ) {
-    const parsedUrl = ExpressUrlParserLib.parseUrl(req);
-    const firstLayerModelName = parsedUrl[0].layerName || '';
-    const singulizedModelName: string = pluralize.singular(firstLayerModelName);
+    const singulizedModelName = await CosmosModelLib.getSingularizedModelName(req);
     const targetModel = cosmosModelStore.getSequelizeModel(singulizedModelName);
     const queryResult = await targetModel?.bulkCreate(req.body);
 
@@ -48,9 +46,7 @@ class CosmosController {
       return CosmosController.bulkCreate(req, res, next, isRestful);
     }
 
-    const parsedUrl = ExpressUrlParserLib.parseUrl(req);
-    const firstLayerModelName = parsedUrl[0].layerName || '';
-    const singulizedModelName: string = pluralize.singular(firstLayerModelName);
+    const singulizedModelName = await CosmosModelLib.getSingularizedModelName(req);
     const targetModel = cosmosModelStore.getSequelizeModel(singulizedModelName);
     const queryResult = await targetModel?.create(req.body);
 
@@ -63,9 +59,7 @@ class CosmosController {
     next: NextFunction,
     isRestful: boolean = true,
   ) {
-    const parsedUrl = ExpressUrlParserLib.parseUrl(req);
-    const firstLayerModelName = parsedUrl[0].layerName || '';
-    const singulizedModelName: string = pluralize.singular(firstLayerModelName);
+    const singulizedModelName = await CosmosModelLib.getSingularizedModelName(req);
     const targetModel = cosmosModelStore.getSequelizeModel(singulizedModelName);
     const queryResult = await targetModel?.findAll();
 

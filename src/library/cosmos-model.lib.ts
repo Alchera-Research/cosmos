@@ -34,6 +34,14 @@ class CosmosModelLib {
 
     return targetModel;
   }
+
+  static async getSingularizedModelName(req: Request) {
+    const parsedUrl = ExpressUrlParserLib.parseUrl(req);
+    const firstLayerModelName = parsedUrl[0].layerName || '';
+    const singulizedModelName: string = pluralize.singular(firstLayerModelName);
+
+    return singulizedModelName;
+  }
 }
 
 export default CosmosModelLib;
