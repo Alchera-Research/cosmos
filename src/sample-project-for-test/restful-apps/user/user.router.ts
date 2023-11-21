@@ -7,6 +7,8 @@ router.route('/')
   .post(UserController.create);
 
 router.route('/:usersId')
-  .get(UserController.get);
+  .get(UserController.read)
+  .put(UserController.update)
+  .delete(UserController.delete);
 
 export default router;
