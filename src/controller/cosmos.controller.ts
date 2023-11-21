@@ -29,8 +29,7 @@ class CosmosController {
     next: NextFunction,
     isRestful: boolean = true,
   ) {
-    const singulizedModelName = await CosmosModelLib.getSingularizedModelName(req);
-    const targetModel = cosmosModelStore.getSequelizeModel(singulizedModelName);
+    const targetModel = await CosmosModelLib.getTargetModel(req);
     const queryResult = await targetModel?.bulkCreate(req.body);
 
     res.status(201).json(queryResult);
@@ -46,8 +45,7 @@ class CosmosController {
       return CosmosController.bulkCreate(req, res, next, isRestful);
     }
 
-    const singulizedModelName = await CosmosModelLib.getSingularizedModelName(req);
-    const targetModel = cosmosModelStore.getSequelizeModel(singulizedModelName);
+    const targetModel = await CosmosModelLib.getTargetModel(req);
     const queryResult = await targetModel?.create(req.body);
 
     res.status(201).json(queryResult);
@@ -59,8 +57,7 @@ class CosmosController {
     next: NextFunction,
     isRestful: boolean = true,
   ) {
-    const singulizedModelName = await CosmosModelLib.getSingularizedModelName(req);
-    const targetModel = cosmosModelStore.getSequelizeModel(singulizedModelName);
+    const targetModel = await CosmosModelLib.getTargetModel(req);
     const queryResult = await targetModel?.findAll();
 
     res.status(200).json(queryResult);

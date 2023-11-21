@@ -42,6 +42,13 @@ class CosmosModelLib {
 
     return singulizedModelName;
   }
+
+  static async getTargetModel(req: Request) {
+    const singulizedModelName = await CosmosModelLib.getSingularizedModelName(req);
+    const targetModel = cosmosModelStore.getSequelizeModel(singulizedModelName);
+
+    return targetModel;
+  }
 }
 
 export default CosmosModelLib;
