@@ -1,19 +1,13 @@
-import pluralize from 'pluralize';
 import { Request, Response, NextFunction } from 'express';
 
 import CosmosModelStoreSingleton from 'src/store/cosmos-model-store.singleton';
-import { ExpressUrlParserLib } from '../library/express-url-parser.lib';
 import CosmosModelLib from '../library/cosmos-model.lib';
 
 const cosmosModelStore = CosmosModelStoreSingleton.getInstance();
 
 class CosmosController {
 
-  static async loadIdData(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
+  static async loadIdData(req: Request, res: Response, next: NextFunction) {
     const targetModel = CosmosModelLib.getModel(req, res, next);
     const targetId = res.locals.cosmos.parsedUrl[0].layerParam;
     const queryResult = await targetModel?.findByPk(targetId);
@@ -23,24 +17,14 @@ class CosmosController {
     return queryResult;
   }
 
-  static async bulkCreate(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    isRestful: boolean = true,
-  ) {
+  static async bulkCreate(req: Request, res: Response, next: NextFunction, isRestful: boolean = true) {
     const targetModel = await CosmosModelLib.getTargetModel(req);
     const queryResult = await targetModel?.bulkCreate(req.body);
 
     res.status(201).json(queryResult);
   }
 
-  static async create(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    isRestful: boolean = true,
-  ) {
+  static async create(req: Request, res: Response, next: NextFunction, isRestful: boolean = true) {
     if (Array.isArray(req.body)) {
       return CosmosController.bulkCreate(req, res, next, isRestful);
     }
@@ -51,35 +35,20 @@ class CosmosController {
     res.status(201).json(queryResult);
   }
 
-  static async bulkRead(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    isRestful: boolean = true,
-  ) {
+  static async bulkRead(req: Request, res: Response, next: NextFunction, isRestful: boolean = true) {
     const targetModel = await CosmosModelLib.getTargetModel(req);
     const queryResult = await targetModel?.findAll();
 
     res.status(200).json(queryResult);
   }
 
-  static async read(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    isRestful: boolean = true,
-  ) {
+  static async read(req: Request, res: Response, next: NextFunction, isRestful: boolean = true) {
     const queryResult = await CosmosController.loadIdData(req, res, next);
 
     res.status(200).json(queryResult);
   }
 
-  static async update(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    isRestful: boolean = true,
-  ) {
+  static async update(req: Request, res: Response, next: NextFunction, isRestful: boolean = true) {
     const queryResult = await CosmosController.loadIdData(req, res, next) || {};
     const updateValue = {
       ...(queryResult.dataValues),
@@ -112,12 +81,7 @@ class CosmosController {
     res.status(200).json(updatedModelQueryResult);
   }
 
-  static async delete(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    isRestful: boolean = true,
-  ) {
+  static async delete(req: Request, res: Response, next: NextFunction, isRestful: boolean = true) {
     const queryResult = await CosmosController.loadIdData(req, res, next);
     const targetModel = res.locals.cosmos.model[res.locals.cosmos.singulizedModelName];
 
@@ -129,7 +93,6 @@ class CosmosController {
 
     res.status(204).json(queryResult);
   }
-
 }
 
 export default CosmosController;
