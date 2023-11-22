@@ -99,21 +99,14 @@ class CosmosController {
       ...req.body,
     };
     const targetModel = res.locals.cosmos.model[res.locals.cosmos.singulizedModelName];
-    const [affectedRows, numberOfAffectedRows] = await targetModel?.update(
-      updateValue,
+    const updatedModelQueryResult = await CosmosController.updateSingleRowOperation(
+      req,
+      res,
+      next,
       {
-        where: {
-          id: res.locals.cosmos.parsedUrl[0].layerParam,
-        },
-        returning: ['*'],
-      },
-    );
-
-    let updatedModelQueryResult = affectedRows;
-
-    if (!affectedRows && numberOfAffectedRows) {
-      updatedModelQueryResult = await targetModel?.findByPk(res.locals.cosmos.parsedUrl[0].layerParam);
-    }
+        body: updateValue,
+        targetModel: targetModel,
+      });
 
     res.status(200).json(updatedModelQueryResult);
   }
