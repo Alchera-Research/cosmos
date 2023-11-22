@@ -48,6 +48,50 @@ class CosmosController {
     res.status(200).json(queryResult);
   }
 
+
+  static async updateSingleRowOperation(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+    options: any) {
+    const [affectedRows, numberOfAffectedRows] = await options?.targetModel?.update(
+      options?.body,
+      {
+        where: {
+          id: options?.body?.id,
+        },
+        returning: ['*'],
+      });
+
+    let updatedModelQueryResult = affectedRows;
+
+    if (!affectedRows && numberOfAffectedRows) {
+      updatedModelQueryResult = await options?.targetModel?.findByPk(options?.body?.id);
+    }
+
+    return updatedModelQueryResult;
+  }
+
+  static async bulkUpdate(req: Request, res: Response, next: NextFunction) {
+    const targetModel = await CosmosModelLib.getTargetModel(req);
+    const resultList = [];
+
+    for (let i = 0; i < req.body.length; i++) {
+      const queryResult = await CosmosController.updateSingleRowOperation(
+        req,
+        res,
+        next,
+        {
+          body: req.body[i],
+          targetModel: targetModel,
+        });
+
+      resultList.push(queryResult);
+    }
+
+    res.status(200).json(resultList);
+  }
+
   static async update(req: Request, res: Response, next: NextFunction, isRestful: boolean = true) {
     const queryResult = await CosmosController.loadIdData(req, res, next) || {};
     const updateValue = {
@@ -55,13 +99,6 @@ class CosmosController {
       ...req.body,
     };
     const targetModel = res.locals.cosmos.model[res.locals.cosmos.singulizedModelName];
-    console.log('res.locals.cosmos', res.locals.cosmos);
-    console.log('targetModel', targetModel);
-    console.log('updateValue', updateValue);
-    console.log(res.locals.cosmos.parsedUrl[0].layerParam);
-
-    // NOTE: update not working. I don't know why.
-
     const [affectedRows, numberOfAffectedRows] = await targetModel?.update(
       updateValue,
       {
