@@ -4,6 +4,7 @@ import UserController from './user.controller';
 const router = express.Router();
 
 router.route('/')
+  .get(UserController.bulkRead)
   .post(UserController.create);
 
 router.route('/:usersId')

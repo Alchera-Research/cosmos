@@ -84,6 +84,16 @@ describe('Integration::APT::user.e2e.test.ts', () => {
       });
 
     });
+
+    describe('GET /users bulkRead', () => {
+      it('APT::normal-case-001: should respond with "200 ok" on root path', async () => {
+        const response = await request(app).get('/users');
+
+        expect(response.status).toBe(200);
+        expect(response.body).toMatchObject(userBodies);
+        console.log('response.body', response.body);
+      });
+    });
   });
 });
 // it('APT::abnormal-case-001: should handle errors and respond with 500 and the proper message', async () => {
