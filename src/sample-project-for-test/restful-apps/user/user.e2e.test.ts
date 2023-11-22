@@ -85,12 +85,39 @@ describe('Integration::APT::user.e2e.test.ts', () => {
 
     });
 
+    let userIds: string[] = [];
+
     describe('GET /users bulkRead', () => {
       it('APT::normal-case-001: should respond with "200 ok" on root path', async () => {
         const response = await request(app).get('/users');
+        userIds = response.body.map((user: any) => user.id);
+
+        console.log('bulkRead: response.body: ' + response.body);
 
         expect(response.status).toBe(200);
         expect(response.body).toMatchObject(userBodies);
+      });
+    });
+
+    describe('PUT /users bulkUpdate', () => {
+      const updatedUserBodies: any[] = [];
+
+
+      it('APT::normal-case-001: should respond with "200 ok" on root path', async () => {
+        userIds.forEach((userId: string, index: number) => {
+          updatedUserBodies.push({
+            id: userId,
+            name: `updatedValue${index}`,
+          });
+        });
+
+        console.log('updatedUserBodies: ', updatedUserBodies);
+
+        const response = await request(app).put('/users')
+          .send(updatedUserBodies);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toMatchObject(updatedUserBodies);
         console.log('response.body', response.body);
       });
     });
