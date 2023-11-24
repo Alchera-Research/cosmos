@@ -48,12 +48,12 @@ class CosmosController {
     res.status(200).json(queryResult);
   }
 
-
   static async updateSingleRowOperation(
     req: Request,
     res: Response,
     next: NextFunction,
-    options: any) {
+    options: any,
+  ) {
     const [affectedRows, numberOfAffectedRows] = await options?.targetModel?.update(
       options?.body,
       {
@@ -61,7 +61,8 @@ class CosmosController {
           id: options?.body?.id,
         },
         returning: ['*'],
-      });
+      },
+    );
 
     let updatedModelQueryResult = affectedRows;
 
@@ -109,6 +110,17 @@ class CosmosController {
       });
 
     res.status(200).json(updatedModelQueryResult);
+  }
+
+  static async bulkDelete(req: Request, res: Response, next: NextFunction, isRestful: boolean = true) {
+    const targetModel = await CosmosModelLib.getTargetModel(req);
+    const queryResult = await targetModel?.destroy({
+      where: {
+        id: req.body.map((item: any) => item.id),
+      },
+    });
+
+    res.status(204).json(queryResult);
   }
 
   static async delete(req: Request, res: Response, next: NextFunction, isRestful: boolean = true) {

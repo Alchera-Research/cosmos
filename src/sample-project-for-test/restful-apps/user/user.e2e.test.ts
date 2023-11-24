@@ -82,7 +82,6 @@ describe('Integration::APT::user.e2e.test.ts', () => {
         expect(response.status).toBe(201);
         expect(response.body).toMatchObject(userBodies);
       });
-
     });
 
     let userIds: string[] = [];
@@ -102,7 +101,6 @@ describe('Integration::APT::user.e2e.test.ts', () => {
     describe('PUT /users bulkUpdate', () => {
       const updatedUserBodies: any[] = [];
 
-
       it('APT::normal-case-001: should respond with "200 ok" on root path', async () => {
         userIds.forEach((userId: string, index: number) => {
           updatedUserBodies.push({
@@ -119,6 +117,17 @@ describe('Integration::APT::user.e2e.test.ts', () => {
         expect(response.status).toBe(200);
         expect(response.body).toMatchObject(updatedUserBodies);
         console.log('response.body', response.body);
+      });
+    });
+
+    describe('DELETE /users bulkDelete', () => {
+      it('APT::normal-case-001: should respond with "204 no content" on root path', async () => {
+        const deleteBody = userIds.map((userId: string) => ({ id: userId }));
+        const response = await request(app).delete('/users')
+          .send(deleteBody);
+
+        expect(response.status).toBe(204);
+        expect(response.body).toMatchObject({});
       });
     });
   });

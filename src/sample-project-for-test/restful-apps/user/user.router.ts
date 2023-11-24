@@ -6,6 +6,7 @@ const router = express.Router();
 router.route('/')
   .get(UserController.bulkRead)
   .put(UserController.bulkUpdate)
+  .delete(UserController.bulkDelete)
   .post(UserController.create);
 
 router.route('/:usersId')
